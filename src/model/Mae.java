@@ -53,4 +53,9 @@ public class Mae {
     public void setDataAniversario(LocalDate dataAniversario) {
         this.dataAniversario = dataAniversario;
     }
+
+    @Override
+    public String toString() {
+        return this.nome; // Isso faz o ComboBox mostrar o nome, e não o código de memória
+    }
 }

@@ -52,4 +52,6 @@ public class Atividade {
     public void setServico(TipoServico servico) {
         this.servico = servico;
     }
+
+
 }

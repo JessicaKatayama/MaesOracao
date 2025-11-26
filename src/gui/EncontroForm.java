@@ -35,25 +35,39 @@ public class EncontroForm extends JFrame {
         btnSalvar.addActionListener(e -> {
             try {
                 Encontro en = new Encontro();
+                // Parse da data
                 en.setDataEncontro(LocalDate.parse(tfData.getText()));
 
+                // Define status
                 if (cbStatus.getSelectedItem().equals("Ativo")) {
                     en.setStatus(Encontro.StatusEncontro.ATIVO);
                 } else {
                     en.setStatus(Encontro.StatusEncontro.CANCELADO);
                 }
 
+                // 1. Salva o Encontro (Gera o ID)
                 encontroDAO.create(en);
 
-                JOptionPane.showMessageDialog(this,
-                        "Encontro salvo com sucesso!\nID gerado: " + en.getIdEncontro());
+                // --- MUDANÇA AQUI ---
+                int resposta = JOptionPane.showConfirmDialog(this,
+                        "Encontro criado! Deseja definir as atividades e responsáveis agora?",
+                        "Sucesso", JOptionPane.YES_NO_OPTION);
+
+                if (resposta == JOptionPane.YES_OPTION) {
+                    // Abre a nova tela passando o encontro que acabamos de criar
+                    new GerenciarAtividadesForm(en).setVisible(true);
+                    dispose(); // Fecha a tela de cadastro de data
+                } else {
+                    // Limpa os campos se o usuário quiser continuar nessa tela
+                    tfData.setText("");
+                }
+                // ---------------------
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
                         "Erro ao salvar: " + ex.getMessage());
             }
         });
-
         add(painel);
     }
 }
